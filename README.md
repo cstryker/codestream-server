@@ -1,11 +1,9 @@
 # CodeStream Backend Services
 
 On the backend (aka. the server-side), CodeStream runs a number of services to
-provide all the functionality needed for the clients. Different configurations
-are supported most natably the use of the broadcaster and rabbitMQ for On-Prem
-vs. PubNub and AWS SQS for CodeStream Cloud. This repo contains all the code for
-these services.
-
+provide all the functionality needed for the clients. The default development
+environment will use the codestream broadcaster and rabbitMQ. Mail services
+are disabled by default.
 ## Development Setup
 
 _Note: CodeStream employees may prefer to use the dev_tools sandbox as it will
@@ -16,7 +14,7 @@ here](docs/codestream-sandbox-setup.md)._
 
 1. Mac or Linux computer using zsh or bash.
 
-1. Nodejs 12.14.1 with npm 6.13.4 (or compatibile)
+1. Official CodeStream builds (CI) use Nodejs 12.14.1 with npm 6.13.4
 
 1. [Docker Desktop](https://www.docker.com/products/docker-desktop) which we'll
    use to provide MongoDB and a pre-configured RabbitMQ.
@@ -28,8 +26,8 @@ If you do not wish to use docker, you'll need to provide both of these services:
    willing to run docker, the instructions below will show you how to install a
    MongoDB docker container.
 
-1. RabbitMQ 3.7.x with the delayed message exchange plugin. You will need to
-   create a codestream user with access. [Details here](api_server/docs/rabbitmq.md).
+1. RabbitMQ 3.7.x with the delayed message exchange plugin. You'll also need to
+   create a codestream user with access. [Notes here](api_server/docs/rabbitmq.md).
 
 ### Installation
 
@@ -40,25 +38,25 @@ If you do not wish to use docker, you'll need to provide both of these services:
 1. Setup your shell's environment
    ```
    cd codestream-server
-   source dev-env.sh
+   source dev-env.sh     # custom settings go in .sandbox-config.sh
    ```
 
 1. Install all the node modules
    ```
-   npm run install-all
+   npm run install:all
    ```
 
 1. Install the rabbitmq docker container pre-configured for codestream (the
    container name will be csrabbitmq)
    ```
-   docker run -d -p 5672:5672 -p 15672:15672 --name csrabbitmq teamcodestream/rabbitmq-onprem:0.0.0
+   npm run run:docker:csrabbitmq
    ```
 
 1. Create a docker volume for mongo and launch the mongodb docker container.
    The docker volume will ensure the data persists beyond the lifespan of the
    container.
    ```
-   docker run -d -P --name csmongo --mount 'type=volume,source=csmongodata,target=/data' mongo:3.4.9
+   npm run run:docker:csmongo
    ```
 
 1. In a separate shell, source in the `dev-env.sh` environment and start up the
@@ -66,16 +64,14 @@ If you do not wish to use docker, you'll need to provide both of these services:
    Move on once you've started it.
    ```
    source dev-env.sh
-   cd api_server
-   bin/api_server --one_worker
+   npm run start:api
    ```
 
 1. In a another separate shell, source in the `dev-env.sh` environment and start
    up the broadcaster service.
    ```
    source dev-env.sh
-   cd broadcaster
-   bin/broadcaster --one_worker
+   npm run start:broadcaster
    ```
 
 1. If you want to use or work on the onprem admin UI, that will need two more
@@ -83,20 +79,22 @@ If you do not wish to use docker, you'll need to provide both of these services:
    files change.
    ```
    source dev-env.sh
-   cd onprem_admin
-   npm run dev
+   npm run start:opadm
    ```
 
-1. This second one will launch the admin server and rebuild the SPA as your
-   files change (via nodemon).
+1. The inbound email service is disabled in the default config.
    ```
    source dev-env.sh
-   cd onprem_admin
-   npm run start
+   npm run start:mailin
    ```
 
-You should now be able to change your CodeStream extension settings to reference
-http://localhost:xxxxx as your CodeStream API server at which point you can create an
-account and go to town.
+1. The outbound email service is also disabled in the default config.
+   ```
+   source dev-env.sh
+previ   npm run start:mailout
+   ```
+
+Point your CodeStream extension to http://localhost:12000. You should be able to
+register and create codemarks. The onprem admin console is at http://localhost:12002
 
 Develop to your heart's content!!!!  We _love_ pull-requests.
