@@ -1,5 +1,6 @@
 
 const removeAssetEnvironment = (cfg) => {
+	// assetEnvironment is no longer a config property
 	if ('assetEnvironment' in cfg.apiServer) {
 		delete cfg.apiServer.assetEnvironment;
 	}
@@ -15,19 +16,23 @@ const removeAssetEnvironment = (cfg) => {
 }
 
 const from15To16 = (nativeCfg, from, to, logger) => {
+	logger.log('migrating from schema version 15 to 16...')
 	removeAssetEnvironment(nativeCfg);
 	// modify the config in some way
 	// return X; // return a new object if you want to replace nativeCfg
 };
 
-const from18To19 = (nativeCfg) => {
+const from17To18 = (nativeCfg) => {
+	console.log('migrating from schema 17 to 18...')
 	// modify the config in some way
 	// return X; // return a new object if you want to replace nativeCfg
 };
 
 // sequence matters!
-export default MigrationMatrix([
+const MigrationMatrix = [
 	// [from-schema, to-schema, migrationFunc]
 	[15, 16, from15To16],
-	[18, 19, from18To19],
-]);
+	[17, 18, from17To18],
+];
+
+module.exports = MigrationMatrix;

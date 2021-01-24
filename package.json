@@ -3,7 +3,9 @@
 	"version": "1.0.0",
 	"description": "CodeStream server components",
 	"scripts": {
-		"install-all": "echo API && cd api_server && npm i --no-save && echo BROADCASTER && cd ../broadcaster && npm i --no-save && echo INBOUND_EMAIL && cd ../inbound_email && npm i --no-save && echo OUTBOUND_EMAIL && cd ../outbound_email && npm i --no-save && echo ONPREM_ADMIN && cd ../onprem_admin && npm i --no-save"
+		"install-all": "echo API && cd api_server && npm i --no-save && echo BROADCASTER && cd ../broadcaster && npm i --no-save && echo INBOUND_EMAIL && cd ../inbound_email && npm i --no-save && echo OUTBOUND_EMAIL && cd ../outbound_email && npm i --no-save && echo ONPREM_ADMIN && cd ../onprem_admin && npm i --no-save",
+		"start:api": "cd api_server && bin/api_server.js --one_worker",
+		"start:broadcaster": "cd broadcaster && bin/broadcaster.js --one_worker"
 	},
 	"repository": {
 		"type": "git",
