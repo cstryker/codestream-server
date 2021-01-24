@@ -91,7 +91,7 @@ If you do not wish to use docker, you'll need to provide both of these services:
 1. The outbound email service is also disabled in the default config.
    ```
    source dev-env.sh
-previ   npm run start:mailout
+   npm run start:mailout
    ```
 
 Point your CodeStream extension to http://localhost:12000. You should be able to
