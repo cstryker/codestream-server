@@ -9,8 +9,12 @@
 [ -z "$CSSVC_BACKEND_ROOT" ] && export CSSVC_BACKEND_ROOT=$(pwd)
 # [ -z "$CSSVC_ENV" ] && export CSSVC_ENV=local
 [ -z "$CSSVC_CFG_URL" ] && export CSSVC_CFG_URL=mongodb://localhost/codestream
-[ -n "$PATH" ] && export PATH=$CSSVC_BACKEND_ROOT/api_server/bin:$CSSVC_BACKEND_ROOT/broadcaster/bin:$CSSVC_BACKEND_ROOT/outbound_email/bin:$CSSVC_BACKEND_ROOT/inbound_email/bin:$PATH
+
+# update paths
+export PATH=$CSSVC_BACKEND_ROOT/api_server/bin:$CSSVC_BACKEND_ROOT/broadcaster/bin:$CSSVC_BACKEND_ROOT/outbound_email/bin:$CSSVC_BACKEND_ROOT/inbound_email/bin:$PATH
 export NODE_PATH=$CSSVC_BACKEND_ROOT/api_server/node_modules:$CSSVC_BACKEND_ROOT/broadcaster/node_modules:$CSSVC_BACKEND_ROOT/outbound_email/server/node_modules:$CSSVC_BACKEND_ROOT/inbound_email/node_modules:$CSSVC_BACKEND_ROOT/onprem_admin/node_modules:$NODE_PATH
+
+[ ! -d "$CSSVC_BACKEND_ROOT/log" ] && { echo "creating $CSSVC_BACKEND_ROOT/log/ for run-time logs" && mkdir $CSSVC_BACKEND_ROOT/log || return 1; }
 
 # temporary - these need to be removed from the default.json file
 [ -z "$OPADM_LOGS" ] && export OPADM_LOGS=$CSSVC_BACKEND_ROOT/log
