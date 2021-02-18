@@ -70,6 +70,7 @@ class APIServer {
 		await Promise.all(serviceFunctions.map(async serviceFunction => {
 			await this.registerModuleServices(serviceFunction);
 		}));
+		await registerOtherServices();
 	}
 
 	// start the service indicated by the passed service function ... starting a service
