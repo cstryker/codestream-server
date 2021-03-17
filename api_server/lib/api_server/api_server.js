@@ -95,6 +95,9 @@ class APIServer {
 	// register all middleware functions
 	registerMiddleware () {
 		this.log('Registering middleware...');
+		if (this.config.apiServer.test) {
+			return this.inTestMode();
+		}
 		if (this.config.apiServer.mockMode) {
 			return this.registerMiddlewareForIpc();
 		}
@@ -184,6 +187,9 @@ class APIServer {
 		this.express[routeObject.method].apply(this.express, args);
 	}
 
+	somefunc () {
+	}
+	
 	// start listening for requests!
 	listen (callback) {
 		if (this.config.apiServer.mockMode) {

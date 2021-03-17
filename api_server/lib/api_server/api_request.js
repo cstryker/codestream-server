@@ -76,6 +76,9 @@ class APIRequest {
 		await this.makeData();
 	}
 
+	async finalize () {
+	}
+	
 	// make the local data cache for this request
 	async makeData () {
 		await this.data.makeData();
